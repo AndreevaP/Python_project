@@ -5,6 +5,7 @@ def pretty_print(mas):
     print('-' * 10)
 
 def get_number_from_index(i)
+    print('1')
 
 def get_empty_list(mas):
     for i in range(4):
