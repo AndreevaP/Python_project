@@ -2,6 +2,7 @@ from logic import *
 import pygame
 import sys
 
+
 def draw_interface():
     pygame.draw.rect(screen, WHITE, TITLE_REC)
     font = pygame.font.SysFont("stxingkai", 70)  # шрифт
@@ -31,7 +32,15 @@ COLORS = {
     0: (130, 130, 130),
     2: (255, 255, 255),
     4: (255, 255, 128),
-    8: (255, 255, 0)
+    8: (255, 255, 0),
+    16: (255, 235, 255),
+    32: (255, 235, 128),
+    64: (255, 235, 0),
+    128: (255, 215, 255),
+    256: (255, 215, 128),
+    512: (255, 215, 0),
+    1024: (255, 195, 255),
+    2048: (255, 195, 128)
 }
 
 WHITE = (255, 255, 255)
@@ -60,6 +69,11 @@ while is_zero_in_mas(mas):
             pygame.quit()
             sys.exit(0)  # окно закроется
         elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                mas = move_left(mas)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    mas = move_right(mas)
             empty = get_empty_list(mas)
             random.shuffle(empty)
             random_num = empty.pop()

@@ -1,5 +1,6 @@
 import unittest
-from logic import get_number_from_index, get_empty_list, get_index_from_number, is_zero_in_mas
+from logic import get_number_from_index, get_empty_list, get_index_from_number, \
+    is_zero_in_mas, move_left
 
 
 class Test_2048(unittest.TestCase):
@@ -75,3 +76,33 @@ class Test_2048(unittest.TestCase):
             [1, 1, 1, 0],
         ]
         self.assertEqual(is_zero_in_mas(mas), True)
+
+    def test_12(self):
+        mas = [
+            [2, 2, 0, 0],
+            [0, 4, 4, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ]
+        rez = [
+            [4, 0, 0, 0],
+            [8, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ]
+        self.assertEqual(move_left(mas), rez)
+
+    def test_13(self):
+        mas = [
+            [2, 4, 4, 2],
+            [4, 0, 0, 2],
+            [0, 0, 0, 0],
+            [8, 8, 4, 4],
+        ]
+        rez = [
+            [2, 8, 2, 0],
+            [4, 2, 0, 0],
+            [0, 0, 0, 0],
+            [16, 8, 0, 0],
+        ]
+        self.assertEqual(move_left(mas), rez)
