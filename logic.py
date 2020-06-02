@@ -121,7 +121,7 @@ def can_move(mas):  # функция для возможности сдвига�
     return False
 
 
-def is_zero_in_mas(mas):
+def is_zero_in_mas(mas): #
     for row in mas:
         if 0 in row:
             return True
