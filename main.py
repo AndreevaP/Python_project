@@ -96,4 +96,4 @@ while is_zero_in_mas(mas) or can_move(mas):  # условие продолжен
             mas = insert_2_or_4(mas, x, y)
             print(f'Мы запомнили элемент под номером {random_num}')
             draw_interface(score, delta)
-            pygame.display.update()
+            pygame.display.update() #
