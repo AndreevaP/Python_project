@@ -71,6 +71,49 @@ pretty_print(mas)
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGTH))
 pygame.display.set_caption("2048")
+
+
+def draw_intro():
+    img2028 = pygame.image.load('og_image.png')
+    a = 0
+    font = pygame.font.SysFont("stxingkai", 90)  # шрифт
+    text_welcome = font.render("Welcome!", True, WHITE)
+    font_b = pygame.font.SysFont("stxingkai", 30)  # шрифт
+    text_begin = font_b.render("Нажмите Enter для начала игры", True, WHITE)
+    pressbutton = False
+    while not pressbutton:
+        for event in pygame.event.get():  # обработчик событий
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
+            elif event.type == pygame.KEYDOWN:
+                a = 0
+                if event.key == pygame.K_RETURN:
+                    pressbutton = True
+                break
+        screen.blit(pygame.transform.scale(img2028, [470, 575]), [10, 10])
+        screen.blit(text_welcome, (100, 100))
+        screen.blit(text_begin, (90, 500))
+        pygame.display.update()
+    screen.fill(BLACK)
+
+
+def draw_game_over():
+    img2028 = pygame.image.load('12.jpg')
+    font = pygame.font.SysFont("stxingkai", 90)  # шрифт
+    text_game_over = font.render("Game over!", True, WHITE)
+    while True:
+        for event in pygame.event.get():  # обработчик событий
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
+        screen.fill(BLACK)
+        screen.blit(pygame.transform.scale(img2028, [470, 570]), [10, 10])
+        screen.blit(text_game_over, (70, 100))
+        pygame.display.update()
+
+
+draw_intro()
 draw_interface(score)
 pygame.display.update()
 while is_zero_in_mas(mas) or can_move(mas):  # условие продолжения игры
@@ -89,11 +132,13 @@ while is_zero_in_mas(mas) or can_move(mas):  # условие продолжен
             elif event.key == pygame.K_DOWN:
                 mas, delta = move_down(mas)
             score += delta
-            empty = get_empty_list(mas)
-            random.shuffle(empty)
-            random_num = empty.pop()
-            x, y = get_index_from_number(random_num)
-            mas = insert_2_or_4(mas, x, y)
-            print(f'Мы запомнили элемент под номером {random_num}')
+            if is_zero_in_mas(mas):
+                empty = get_empty_list(mas)
+                random.shuffle(empty)
+                random_num = empty.pop()
+                x, y = get_index_from_number(random_num)
+                mas = insert_2_or_4(mas, x, y)
+                print(f'Мы запомнили элемент под номером {random_num}')
             draw_interface(score, delta)
-            pygame.display.update() ##
+            pygame.display.update()
+draw_game_over()

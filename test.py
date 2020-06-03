@@ -157,4 +157,4 @@ class Test_2048(unittest.TestCase):
 
         self.assertEqual(can_move(mas), False)
 
-        #
+
