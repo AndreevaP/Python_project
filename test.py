@@ -1,3 +1,4 @@
+# В данном модуле мы проверяем правильно ли работают наши функции
 import unittest
 from logic import get_number_from_index, get_empty_list, get_index_from_number, \
     is_zero_in_mas, move_left, move_up, move_down, can_move
@@ -156,5 +157,3 @@ class Test_2048(unittest.TestCase):
         ]
 
         self.assertEqual(can_move(mas), False)
-
-

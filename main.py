@@ -3,6 +3,7 @@ import pygame
 import sys
 
 
+# функция создания\отрисовки поля игры
 def draw_interface(score, delta=0):
     pygame.draw.rect(screen, WHITE, TITLE_REC)
     font = pygame.font.SysFont("stxingkai", 70)  # шрифт
@@ -12,6 +13,7 @@ def draw_interface(score, delta=0):
     text_score_value = font_score.render(f"{score}", True, COLORS_TEXT)
     screen.blit(text_score, (20, 35))
     screen.blit(text_score_value, (175, 35))
+    # Вывод на игровое поле количество набранных очков
     if delta > 0:
         text_delta = font_delta.render(f"+{delta}", True, COLORS_TEXT)
         screen.blit(text_delta, (170, 65))
@@ -49,7 +51,9 @@ COLORS = {
     256: (255, 215, 128),
     512: (255, 215, 0),
     1024: (255, 195, 255),
-    2048: (255, 195, 128)
+    2048: (255, 195, 128),
+    4096: (255, 195, 0),
+    8192: (255, 175, 255)
 }
 
 WHITE = (255, 255, 255)
@@ -73,16 +77,19 @@ screen = pygame.display.set_mode((WIDTH, HEIGTH))
 pygame.display.set_caption("2048")
 
 
+# Функция создания главного приветсвенного окна (Welcome)
 def draw_intro():
     img2028 = pygame.image.load('og_image.png')
     a = 0
-    font = pygame.font.SysFont("stxingkai", 90)  # шрифт
+    # шрифт
+    font = pygame.font.SysFont("stxingkai", 90)
     text_welcome = font.render("Welcome!", True, WHITE)
     font_b = pygame.font.SysFont("stxingkai", 30)  # шрифт
     text_begin = font_b.render("Нажмите Enter для начала игры", True, WHITE)
     pressbutton = False
     while not pressbutton:
-        for event in pygame.event.get():  # обработчик событий
+        # обработчик событий
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit(0)
@@ -91,6 +98,7 @@ def draw_intro():
                 if event.key == pygame.K_RETURN:
                     pressbutton = True
                 break
+        screen.fill(WHITE)
         screen.blit(pygame.transform.scale(img2028, [470, 575]), [10, 10])
         screen.blit(text_welcome, (100, 100))
         screen.blit(text_begin, (90, 500))
@@ -98,17 +106,19 @@ def draw_intro():
     screen.fill(BLACK)
 
 
+# Функция осоздания конечного окна (Game over)
 def draw_game_over():
-    img2028 = pygame.image.load('12.jpg')
-    font = pygame.font.SysFont("stxingkai", 90)  # шрифт
-    text_game_over = font.render("Game over!", True, WHITE)
+    img2028 = pygame.image.load('10.png')
+    # шрифт
+    font = pygame.font.SysFont("stxingkai", 90)
+    text_game_over = font.render("Game over!", True, COLORS_TEXT)
     while True:
         for event in pygame.event.get():  # обработчик событий
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit(0)
-        screen.fill(BLACK)
-        screen.blit(pygame.transform.scale(img2028, [470, 570]), [10, 10])
+        screen.fill(WHITE)
+        screen.blit(pygame.transform.scale(img2028, [470, 580]), [10, 10])
         screen.blit(text_game_over, (70, 100))
         pygame.display.update()
 
@@ -116,22 +126,30 @@ def draw_game_over():
 draw_intro()
 draw_interface(score)
 pygame.display.update()
-while is_zero_in_mas(mas) or can_move(mas):  # условие продолжения игры
-    for event in pygame.event.get():  # обработчик событий
+# условие продолжения игры
+while is_zero_in_mas(mas) or can_move(mas):
+    # обработчик событий
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit(0)  # окно закроется
+            # окно закроется
+            sys.exit(0)
         elif event.type == pygame.KEYDOWN:
             delta = 0
+            # обработка нажатия клавиши LEFT
             if event.key == pygame.K_LEFT:
                 mas, delta = move_left(mas)
+            # обработка нажатия клавиши RIGHT
             elif event.key == pygame.K_RIGHT:
                 mas, delta = move_right(mas)
+            # обработка нажатия клавиши UP
             elif event.key == pygame.K_UP:
                 mas, delta = move_up(mas)
+            # обработка нажатия клавиши DOWN
             elif event.key == pygame.K_DOWN:
                 mas, delta = move_down(mas)
             score += delta
+            # проверка, есть ли не заполненные цифрами клетки
             if is_zero_in_mas(mas):
                 empty = get_empty_list(mas)
                 random.shuffle(empty)
@@ -139,6 +157,23 @@ while is_zero_in_mas(mas) or can_move(mas):  # условие продолжен
                 x, y = get_index_from_number(random_num)
                 mas = insert_2_or_4(mas, x, y)
                 print(f'Мы запомнили элемент под номером {random_num}')
+
             draw_interface(score, delta)
             pygame.display.update()
+            for i in range(4):
+                for j in range(4):
+                    # условие выигрыша
+                    if mas[i][j] == 2048:
+                        # отрисовка экрана You win
+                        img2028 = pygame.image.load('10.png')
+                        screen.fill(BLACK)
+                        pygame.display.update()
+                        screen.blit(pygame.transform.scale(img2028, [470, 580]), [10, 10])
+                        # шрифт
+                        font_w = pygame.font.SysFont("stxingkai", 90)  # шрифт
+                        text_you_win = font_w.render("You win!", True, COLORS_TEXT)
+                        screen.blit(text_you_win, (120, 100))
+                        pygame.display.update()
+                        break
+
 draw_game_over()
